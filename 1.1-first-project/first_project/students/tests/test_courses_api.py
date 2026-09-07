@@ -1,8 +1,3 @@
-from django.test import TestCase
-
-# Create your tests here.
-
-
 import pytest
 from rest_framework.test import APIClient
 from django.urls import reverse
@@ -16,7 +11,7 @@ def test_course_list():
     client = APIClient()
     baker.make(Course, _quantity=3)
 
-    url = reverse('courses-list')
+    url = reverse('course-list')  # ← ИСПРАВЛЕНО!
     response = client.get(url)
 
     assert response.status_code == 200
@@ -29,7 +24,7 @@ def test_course_retrieve():
     client = APIClient()
     course = baker.make(Course)
 
-    url = reverse('courses-detail', args=[course.id])
+    url = reverse('course-detail', args=[course.id])  # ← ИСПРАВЛЕНО!
     response = client.get(url)
 
     assert response.status_code == 200
@@ -40,7 +35,7 @@ def test_course_retrieve():
 def test_course_create():
     """Тест: создание нового курса"""
     client = APIClient()
-    url = reverse('courses-list')
+    url = reverse('course-list')  # ← ИСПРАВЛЕНО!
     data = {'name': 'Test Course'}
 
     response = client.post(url, data)
@@ -56,7 +51,7 @@ def test_course_update():
     client = APIClient()
     course = baker.make(Course, name='Old Name')
 
-    url = reverse('courses-detail', args=[course.id])
+    url = reverse('course-detail', args=[course.id])  # ← ИСПРАВЛЕНО!
     data = {'name': 'New Name'}
 
     response = client.put(url, data)
@@ -72,7 +67,7 @@ def test_course_delete():
     client = APIClient()
     course = baker.make(Course)
 
-    url = reverse('courses-detail', args=[course.id])
+    url = reverse('course-detail', args=[course.id])  # ← ИСПРАВЛЕНО!
     response = client.delete(url)
 
     assert response.status_code == 204
@@ -84,9 +79,9 @@ def test_course_filter_by_id():
     """Тест: фильтрация курсов по id"""
     client = APIClient()
     course1 = baker.make(Course)
-    baker.make(Course)  # второй курс
+    baker.make(Course)
 
-    url = reverse('courses-list')
+    url = reverse('course-list')  # ← ИСПРАВЛЕНО!
     response = client.get(url, {'id': course1.id})
 
     assert response.status_code == 200
